@@ -1,0 +1,6 @@
+{
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "Blackboxapp.blackbox",
+    "notebook.formatOnSave.enabled": true
+}
