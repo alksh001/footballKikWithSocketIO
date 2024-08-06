@@ -223,16 +223,24 @@ footer .container .text-muted {
 }
 
         .btn-social {
-            display: inline-block;
+            display: block;
             padding: 10px 20px;
             color: white;
             text-align: center;
             text-decoration: none;
             border-radius: 0;
             margin-top: 10px;
+            margin-left: 35px;
         }
         .btn-facebook {
             background-color: #4aa1f3;
+            border-radius: 0;
+            color: #fff;
+            align-items: center;
+            width: 400px;
+        }
+        .btn-gplus {
+            background-color: #e44b34;
             border-radius: 0;
             color: #fff;
             align-items: center;

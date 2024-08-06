@@ -13,45 +13,57 @@ const passport = require('passport')
 const container = require('./container');
 
 
-container.resolve(function (users, _) {
+container.resolve(function (users, _, admin, home)
+{
 
     mongoose.Promise = global.Promise;
     mongoose.connect('mongodb://127.0.0.1:27017/footballkik')
-        .then(() => {
-        console.log("DB connected");
-        }).catch(err => {
-        console.log('mongoerr',err);
-    });
-    
+        .then(() =>
+        {
+            console.log("DB connected");
+        }).catch(err =>
+        {
+            console.log('mongoerr', err);
+        });
+
     const app = SetupExpress();
 
-    function SetupExpress() {
+    function SetupExpress()
+    {
         const app = express();
         const server = http.createServer(app);
-        server.listen(3000, function() {
+        server.listen(3000, function ()
+        {
             console.log('Listening on 3000');
         });
 
         ConfigureExpress(app);
 
-         const router = require('express-promise-router')(); // Call the function to create a new router instance
+        const router = require('express-promise-router')(); // Call the function to create a new router instance
 
-        if (users && typeof users.SetRouting === 'function') {
-        
+
+        if (users && typeof users.SetRouting === 'function')
+        {
+
             users.SetRouting(router);
+            admin.SetRouting(router);
+            home.SetRouting(router)
             app.use(router);
 
-        } else {
+        } else
+        {
             console.error('Error: users.SetRouting is not a function or users module not resolved properly');
         }
         return app;
     }
-    
 
-    function ConfigureExpress(app) {
-        
+
+    function ConfigureExpress(app)
+    {
+
         require('./passport/passport-local');
         require('./passport/passport-facebook');
+        require('./passport/passport-google');
 
         app.use(express.static('public'));
         app.use(cookieParser());
