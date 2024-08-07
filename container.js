@@ -8,7 +8,8 @@ const simpleDependencies = [
     ['passport', 'passport'],
     ['formidable', 'formidable'],
     ['Club', './models/clubs'],
-    ['aws', './helpers/AWSUpload']
+    ['aws', './helpers/AWSUpload'],
+    ['async', 'async']
     // ['users', 'users']
     //  ['users', './controllers/users']
 ];
