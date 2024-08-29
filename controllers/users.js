@@ -47,7 +47,7 @@ module.exports = function (_, passport, User)
         }),
 
         getgoogleLogin: passport.authenticate('google', {
-            scope: ['openid', 'email']
+            scope: ['profile', 'email']
         }),
 
         facebookLogin: passport.authenticate('facebook', {
@@ -61,7 +61,6 @@ module.exports = function (_, passport, User)
             failureRedirect: '/signup',
             failureFlash: true
         }),
-
 
     }
 } 

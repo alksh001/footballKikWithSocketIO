@@ -8,19 +8,29 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const mongoose = require('mongoose');
 const flash = require('connect-flash');
-const passport = require('passport')
+const passport = require('passport');
+const socketIO = require('socket.io');
+const User = require('./models/users');
+const { Users } = require('./helpers/UsersClass');
 
 const container = require('./container');
 
 
-container.resolve(function (users, _, admin, home)
+container.resolve(function (users, _, admin, home, group)
 {
 
     mongoose.Promise = global.Promise;
     mongoose.connect('mongodb://127.0.0.1:27017/footballkik')
-        .then(() =>
+        .then(async () =>
         {
             console.log("DB connected");
+            await User.collection.dropIndex('fullName_1').catch(err =>
+            {
+                if (err.codeName !== 'IndexNotFound')
+                {
+                    throw err;
+                }
+            });
         }).catch(err =>
         {
             console.log('mongoerr', err);
@@ -32,12 +42,14 @@ container.resolve(function (users, _, admin, home)
     {
         const app = express();
         const server = http.createServer(app);
+        const io = socketIO(server);
         server.listen(3000, function ()
         {
             console.log('Listening on 3000');
         });
 
         ConfigureExpress(app);
+        require('./socket/groupchat')(io, Users)
 
         const router = require('express-promise-router')(); // Call the function to create a new router instance
 
@@ -48,6 +60,7 @@ container.resolve(function (users, _, admin, home)
             users.SetRouting(router);
             admin.SetRouting(router);
             home.SetRouting(router)
+            group.SetRouting(router)
             app.use(router);
 
         } else

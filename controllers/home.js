@@ -59,8 +59,15 @@ module.exports = function (Club, _, async)
                 {
                     dataChunk.push(res1.slice(i, i + chunkSize));
                 }
+                const countrySort = _.sortBy(res2, '_id');
+                console.log({ inhome: req.user });
 
-                res.render('home', { title: 'FootballKik - Home', data: dataChunk, country: res2 })
+                res.render('home', {
+                    coun: 'FootballKik - Home',
+                    user: req.user,
+                    data: dataChunk,
+                    country: countrySort
+                })
             })
         }
     }
